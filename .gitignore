@@ -45,3 +45,6 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 
 .DS_Store
+
+**/*.run
+**/*.lst

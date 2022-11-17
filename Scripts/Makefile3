@@ -22,25 +22,31 @@ VAMIGA = /tmp/vAmiga/vAmiga.app/Contents/MacOS/vAmiga
 export VAMIGA
 endif
 
-ifeq (,$(wildcard $(VAMIGA)))
-    $(error vAmiga executable not found)
-endif
-ifeq (,$(wildcard $(KICK13)))
-    $(error $(KICK13) not found)
-endif
+#ifeq (,$(wildcard $(VAMIGA)))
+#    $(error vAmiga executable not found)
+#endif
+#ifeq (,$(wildcard $(KICK13)))
+#    $(error $(KICK13) not found)
+#endif
 
 # Collect all .ini files
 INI=$(wildcard */*.ini)
 LOG=$(INI:.ini=.log)
 TIFF=$(INI:.ini=.tiff)
 
+ASM=$(foreach item,$(wildcard */),$(wildcard $(addsuffix $(item:/=.s),$(item))))
+EXE=$(ASM:.s=.run)
+
 .PHONY: all prepare clean
 
-all: $(LOG) $(TIFF)
+all: $(EXE) #$(LOG) $(TIFF)
 	@echo > /dev/null
 		
 clean:
-	@rm -f */*.log
+	@rm -f $(EXE) $(EXE:.exe=.lst)
+
+%.run: %.s
+	vasmm68k_mot -quiet -m68040 -Fhunkexe -I .. -I ../../../include -I /opt/amiga/m68k-amigaos/ndk-include $< -o $@ -L $(@D)/$(<F:.s=.lst)
 
 %.log: %.tiff
 	@cp $(wildcard $(dir $@)*.adf) /tmp/$(basename $(@F)).adf
