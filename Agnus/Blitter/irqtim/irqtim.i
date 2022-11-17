@@ -13,11 +13,13 @@ TRP0_INT_VECTOR		equ $80
 TRP1_INT_VECTOR		equ $84
 TRP2_INT_VECTOR		equ $88
 
+	IFND BLTSIZE1
 BLTSIZE1            equ (1)<<6|(1)
 BLTSIZE2            equ (2)<<6|(1)
 BLTSIZE3            equ (3)<<6|(1)
 BLTSIZE4            equ (2)<<6|(2)
 BLTSIZE5            equ (5)<<6|(1)
+	ENDC
 
 MAIN:
 	; Load OCS base address
