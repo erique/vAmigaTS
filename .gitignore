@@ -47,4 +47,6 @@ fastlane/test_output
 .DS_Store
 
 **/*.run
+**/*.rom
+**/*.s68
 **/*.lst
