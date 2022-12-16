@@ -11,6 +11,7 @@
 ; file.
 ;
                         IFND    HARDWARE_HW_EXAMPLES_I
+        NOLIST
 HARDWARE_HW_EXAMPLES_I  SET     1
 **
 **       Filename: hardware/hw_examples.i
@@ -313,4 +314,5 @@ COLOR31         equ     color+$3E
 *******************************************************************************
 **
 **
+        LIST
                         ENDC    ; HARDWARE_HW_EXAMPLES_I
