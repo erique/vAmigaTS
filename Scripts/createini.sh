@@ -1,45 +1,13 @@
 #!/bin/bash
 
-# This is a personal script which I use for creating .ini files. 
-# Dirk W. Hoffmann, 2022
-#
-# Usage: cputest <list of test directories>
+INI=$1
+DIR=$(basename -s .ini ${INI})
+ROM="${DIR}/${DIR}.rom"
+ADF="${DIR}/${DIR}.adf"
+TEMPLATE="amiga_m68k"
 
-function createScript () {
+ROOT=$(realpath $(dirname ${BASH_SOURCE[0]})/..)
 
-	NAME=$(basename $1)_$2
-	FILE=${NAME}.ini
-	ADF=/tmp/${NAME}.adf
+TEMPLATE_INI="${ROOT}/${TEMPLATE}/replay.ini"
 
-	echo "# Regression testing script for vAmiga" > $FILE
-	echo "# Dirk W. Hoffmann, $(date +'%Y')" >> $FILE
-	echo "" >> $FILE
-	echo "# Setup the test environment" >> $FILE
-	if [[ "$2" == "OCS" ]]; then
-		echo "regression setup A500_OCS_1MB /tmp/kick13.rom" >> $FILE
-	else 
-		echo "regression setup A500_ECS_1MB /tmp/kick13.rom" >> $FILE
-	fi
-	if [[ "$2" == "68010" ]]; then
-		echo "cpu set revision $2" >> $FILE
-	fi
-	echo "" >> $FILE
-	echo "# Run the test" >> $FILE
-	echo "regression run $ADF" >> $FILE
-	echo "wait 9 seconds" >> $FILE
-	echo "" >> $FILE
-	echo "# Exit with a screenshot" >> $FILE
-	echo "screenshot save $NAME" >> $FILE
-}
-
-for dir in "$@"
-do
-	if [[ -d $dir ]]; then
-		echo "Creating scripts for $dir"
-		cd $dir
-		createScript $dir ECS
-		createScript $dir OCS
-		cd - &> /dev/null
-	fi
-done
-
+sed "s|^#ROM.*=.*test.rom.*|ROM\ =\ \"${ROM}\",0,0x00000000|" ${TEMPLATE_INI} > ${INI}
