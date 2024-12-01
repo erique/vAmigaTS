@@ -2,6 +2,9 @@
         include hardware/dmabits.i
         include graphics/gfxbase.i
 
+        include "../../../include/registers.i"
+        include "../../../include/ministartup.i"
+
 custom=$dff000
 ciaa=$bfe001
 
@@ -13,8 +16,9 @@ _LVOLoadView=-222
 
 nwords=24
 
-        section code,code
+;        section code,code
 
+        IF 0
 start:
         move.l  $4.w,a6
 	lea	gfxname(pc),a1
@@ -39,7 +43,7 @@ start:
         move.w  d0,olddma
         move.w  d1,dmacon(a6)
 
-        bsr     main
+        bsr     MAIN
 
 	move.w	olddma,dmacon+custom
 	move.w	oldint,intena+custom
@@ -57,7 +61,9 @@ gfxname:
 	dc.b 'graphics.library',0
 	even
 
-main:
+        ENDC
+
+MAIN:
         move.l  #gradient,d0
         move.l  #copperlist,a0
         rept 5
@@ -109,13 +115,17 @@ colors:
         dc.w $FFF,$00F,$F00,$0F0,$003,$F0B,$050,$FD0,$09F,$944,$0FB,$73C,$199,$FAF,$BC7,$F05
         dc.w $F84,$D0F,$210,$705,$769,$0A2,$CF0,$860,$FB9,$886,$A00,$1FF,$049,$D59,$9DF,$04F
 
+        IF 0
+
         SECTION bss,bss
 gfxbase: ds.l 1
 oldview: ds.l 1
 olddma:  ds.w 1
 oldint:  ds.w 1
 
-        SECTION data_c,data_c
+        ENDC
+
+;        SECTION data_c,data_c
 copperlist:
         dc.w    bplpt+$00,$0000 ; 1
         dc.w    bplpt+$02,$0000
