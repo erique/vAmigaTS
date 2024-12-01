@@ -20,3 +20,7 @@ clean:
 
 %.s68: %.s Makefile
 	vasmm68k_mot -Fsrec $(VASM_FLAGS) $< -o $@ -L $(@D)/$(<F:.s=.s68.lst)
+
+# dummy
+tiff:
+	@echo > /dev/null
