@@ -1,4 +1,5 @@
 	include "../../../../include/registers.i"
+        include "../../../../include/ministartup.i"
 	include "hardware/dmabits.i"
 	include "hardware/intbits.i"
 	
@@ -8,7 +9,7 @@ SCREEN_BIT_DEPTH	equ 5
 	
 BASE                equ $38
 
-entry:	
+MAIN:	
 	lea 	CUSTOM,a1
 
 	; Install interrupt handler
